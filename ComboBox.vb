@@ -46,6 +46,26 @@ Err:
 
 
     End Function
+    Public Function ID(ByRef cbo As System.Windows.Forms.ComboBox) As Integer
+
+        On Error GoTo Err
+        Dim _id As Integer = 0
+        If cbo.Items.Count > 0 Then
+            _id = cbo.SelectedValue
+        Else
+            _id = 0
+        End If
+        ID = _id
+        Return ID
+        Exit Function
+
+Err:
+        Dim rtn As String = "The error occur within the module " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + Me.ToString() + "."
+
+        RaiseEvent ErrorMessage(Err.Description, Err.Number, rtn)
+
+
+    End Function
     Public Function ArrayID(ByRef ds As DataSet) As ArrayList
 
         On Error GoTo Err
