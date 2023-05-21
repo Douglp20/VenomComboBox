@@ -1,4 +1,9 @@
 ﻿Public Class ComboBox
+
+    Public mUserLogin As String
+    Public mlngOrderID As Integer
+    Public mPrivilegeControl As ArrayList
+
     Public Event ErrorMessage(ByVal errDesc As String, ByVal errNo As Integer, ByVal errTrace As String)
     Public Sub New()
     End Sub
@@ -46,6 +51,35 @@ Err:
 
 
     End Function
+    Public Function UnBinding(ByRef cbo As System.Windows.Forms.ComboBox)
+
+        On Error GoTo Err
+
+
+        Dim tbl As DataTable = New DataTable("Empty")
+        Dim ID As DataColumn = New DataColumn("ID") : ID.DataType = System.Type.GetType("System.Int32")
+        Dim Name As DataColumn = New DataColumn("Name") : Name.DataType = System.Type.GetType("System.String")
+
+        With tbl.Columns
+            .Add(ID)
+            .Add(Name)
+        End With
+        tbl.Clear()
+        Dim rowEntry As DataRow
+        rowEntry = tbl.NewRow()
+        rowEntry = tbl.NewRow() : rowEntry.Item("ID") = 0 : rowEntry.Item("Name") = "" : tbl.Rows.Add(rowEntry)
+
+        Binding(cbo, tbl)
+
+        Exit Function
+
+Err:
+        Dim rtn As String = "The error occur within the module " + System.Reflection.MethodBase.GetCurrentMethod().Name + " : " + Me.ToString() + "."
+        RaiseEvent ErrorMessage(Err.Description, Err.Number, rtn)
+
+
+    End Function
+
     Public Function ID(ByRef cbo As System.Windows.Forms.ComboBox) As Integer
 
         On Error GoTo Err
